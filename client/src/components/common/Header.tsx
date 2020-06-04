@@ -41,9 +41,7 @@ const Spacer = styled.div`
 `;
 
 interface headerProps {
-	user?: {
-		username: string;
-	};
+	user?: { user: string; username: string };
 	onLogout?: () => void;
 }
 const Header: React.FC<headerProps> = ({ user, onLogout }) => {

@@ -54,7 +54,7 @@ const StyledLink = styled(Link)<buttonProps>`
 
 const Button: React.FC<buttonProps> = ({ to, cyan, ...rest }) => {
 	return to ? (
-		<StyledLink {...rest} to='/' cyan={cyan ? 1 : 0} />
+		<StyledLink {...rest} to={to} cyan={cyan ? 1 : 0} />
 	) : (
 		<StyledButton {...rest} cyan={cyan ? 1 : 0} />
 	);

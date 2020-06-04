@@ -3,46 +3,55 @@ import WriteActionButtons from '../../components/write/WriteActionButtons';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { writePost } from '../../modules/write';
+import { RouteComponentProps } from 'react-router-dom';
+import * as Types from '../../modules/reduxTypes';
 
-const WriteActionButtonsContainer = ({ history }) => {
-    const dispatch = useDispatch();
-    const { title, body, tags, post, postError, originalPostId } = useSelector(
-        ({ write }) => ({
-            title: write.title,
-            body: write.body,
-            tags: write.tags,
-            post: write.post,
-            postError: write.postError,
-        })
-    );
+interface WriteActionButtonsContainerProps extends RouteComponentProps {
+	example?: string;
+}
 
-    // 포스트 등록
-    const onPublish = () => {
-        dispatch(
-            writePost({
-                title,
-                body,
-                tags,
-            })
-        );
-    };
+const WriteActionButtonsContainer: React.FC<WriteActionButtonsContainerProps> = ({
+	history,
+}) => {
+	const dispatch = useDispatch();
+	const { title, body, tags, post, postError, originalPostId } = useSelector(
+		({ write }: { write: Types.writeStateType }) => ({
+			title: write.title,
+			body: write.body,
+			tags: write.tags,
+			post: write.post,
+			postError: write.postError,
+			originalPostId: write.originalPostId,
+		})
+	);
 
-    // 취소
-    const onCancel = () => {
-        history.goBack();
-    };
+	// 포스트 등록
+	const onPublish = () => {
+		dispatch(
+			writePost({
+				title,
+				body,
+				tags,
+			})
+		);
+	};
 
-    // 성공 혹은 실패시 할 작업
-    useEffect(() => {
-        if (post) {
-            const { _id, user } = post;
-            history.push(`/@${user.username}/${_id}`);
-        }
-        if (postError) {
-            console.log(postError);
-        }
-    }, [history, post, postError]);
-    return <WriteActionButtons onPublish={onPublish} onCancel={onCancel} />;
+	// 취소
+	const onCancel = () => {
+		history.goBack();
+	};
+
+	// 성공 혹은 실패시 할 작업
+	useEffect(() => {
+		if (post) {
+			const { _id, user } = post;
+			history.push(`/@${user.username}/${_id}`);
+		}
+		if (postError) {
+			console.log(postError);
+		}
+	}, [history, post, postError]);
+	return <WriteActionButtons onPublish={onPublish} onCancel={onCancel} />;
 };
 
 export default withRouter(WriteActionButtonsContainer);

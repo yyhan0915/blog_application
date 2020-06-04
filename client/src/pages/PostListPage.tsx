@@ -1,13 +1,14 @@
 import React from 'react';
 import Header from '../components/common/Header';
+import PostList from '../components/post/PostList';
 
 const PostListPage = () => {
-    return (
-        <>
-            <Header />
-            <div>안녕하세요</div>
-        </>
-    );
+	return (
+		<>
+			<Header />
+			<PostList />
+		</>
+	);
 };
 
 export default PostListPage;
