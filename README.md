@@ -1,6 +1,3 @@
-# blog_application
-blog application with MERN Stack &amp; TypeScript
-
 # Blog Application with MERN Stack & Typescript
 this application is coded with stack of Moongoose / Express / React / Node js along with other libraries & modules
 
