@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactText } from 'react';
+import React, { ReactNode } from 'react';
 import styled, { css } from 'styled-components';
 import palette from '../../lib/styles/palette';
 import { Link } from 'react-router-dom';

@@ -16,31 +16,7 @@ exports.checkOwnPost = exports.update = exports.remove = exports.read = exports.
 const post_1 = __importDefault(require("../../models/post"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const joi_1 = __importDefault(require("@hapi/joi"));
-const sanitize_html_1 = __importDefault(require("sanitize-html"));
 const { ObjectId } = mongoose_1.default.Types;
-const sanitzeOption = {
-    allowedTags: [
-        'h1',
-        'h2',
-        'b',
-        'i',
-        'u',
-        's',
-        'p',
-        'ul',
-        'ol',
-        'li',
-        'blockquote',
-        'a',
-        'img',
-    ],
-    allowedAttributes: {
-        a: ['href', 'name', 'target'],
-        img: ['src'],
-        li: ['class'],
-    },
-    allowedSchemes: ['data', 'http'],
-};
 exports.getPostById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     if (!ObjectId.isValid(id)) {
@@ -70,12 +46,7 @@ exports.write = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(400).end(result.error);
     }
     const { title, body, tags } = req.body;
-    const post = new post_1.default({
-        title,
-        body: sanitize_html_1.default(body, sanitzeOption),
-        tags,
-        user: res.locals.user,
-    });
+    const post = new post_1.default({ title, body, tags, user: res.locals.user });
     try {
         yield post.save();
         return res.end();
@@ -84,12 +55,6 @@ exports.write = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(500).end(e);
     }
 });
-const removeHtmlAndShorten = (body) => {
-    const filtered = sanitize_html_1.default(body, {
-        allowedTags: [],
-    });
-    return filtered.length < 200 ? filtered : `${filtered.slice(0, 200)}...`;
-};
 exports.list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const page = parseInt(req.query.page || '1', 10);
     if (page < 1) {
@@ -107,7 +72,9 @@ exports.list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.set('Last-Page', Math.ceil(postCount / 10).toString());
         res.json(posts
             .map(post => post.toJSON())
-            .map(post => (Object.assign(Object.assign({}, post), { body: removeHtmlAndShorten(post.body) }))));
+            .map(post => (Object.assign(Object.assign({}, post), { body: post.body.length < 200
+                ? post.body
+                : `${post.body.slice(0, 200)}...` }))));
         res.status(200);
         res.end();
         return null;
@@ -151,12 +118,8 @@ exports.update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(400).end(result.error);
     }
     const { id } = req.params;
-    const nextData = Object.assign({}, req.body);
-    if (nextData.body) {
-        nextData.body = sanitize_html_1.default(nextData.body);
-    }
     try {
-        const post = yield post_1.default.findByIdAndUpdate(id, nextData.body, {
+        const post = yield post_1.default.findByIdAndUpdate(id, req.body, {
             new: true,
         }).exec();
         if (!post) {
