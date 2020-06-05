@@ -1,10 +1,12 @@
 require('dotenv').config();
 import express, { Application } from 'express';
 import mongoose from 'mongoose';
-import apiRoute from './api';
-import jwtMiddleware from './lib/jwtMiddleware';
+import path from 'path';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
+
+import apiRoute from './api';
+import jwtMiddleware from './lib/jwtMiddleware';
 
 const app: Application = express();
 
@@ -33,6 +35,8 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use('/', express.static(path.join(__dirname, '../../client/build')));
 app.use(jwtMiddleware);
 // Routing
 app.use('/api', apiRoute);
