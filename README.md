@@ -24,6 +24,7 @@ following typical modules are introduced and applied.
 
 ## Getting started
 
+```bash
 1. Install dependencies:
 npm install
 
@@ -35,3 +36,4 @@ npm start
 3. client:
 cd client
 npm start
+```
