@@ -7,16 +7,18 @@ this application is coded with stack of Moongoose / Express / React / Node js al
 ## Technology
 following typical modules are introduced and applied.
 
+1. client side
 - react
 - webpack
 - redux / react-redux
-- redux-saga
+- redux actions / redux-saga
 - Joi
 - styled-component (scss)
 - axios
 - immer
 - quill
 
+2. server side
 - moogose / mongoDB
 - sanitized HTML
 - bcrypt
