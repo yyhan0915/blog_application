@@ -1,0 +1,1 @@
+{"version":3,"file":"checkLoggedIn.js","sourceRoot":"","sources":["../../src/lib/checkLoggedIn.ts"],"names":[],"mappings":";;AAEA,MAAM,aAAa,GAAG,CAAC,GAAY,EAAE,GAAa,EAAE,IAAkB,EAAE,EAAE;IACtE,IAAI,CAAC,GAAG,CAAC,MAAM,CAAC,IAAI,EAAE;QAClB,OAAO,GAAG,CAAC,MAAM,CAAC,GAAG,CAAC,CAAC;KAC1B;IACD,OAAO,IAAI,EAAE,CAAC;AAClB,CAAC,CAAC;AAEF,kBAAe,aAAa,CAAC"}
