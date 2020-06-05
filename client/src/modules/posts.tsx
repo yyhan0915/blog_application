@@ -1,11 +1,13 @@
 import { createAction } from 'redux-actions';
+import { takeLatest } from 'redux-saga/effects';
+import { ParsedQs } from 'qs';
+
 import createRequestSaga, {
 	createRequestActionTypes,
 } from '../lib/createRequestSaga';
 import * as postsAPI from '../lib/api/posts';
-import { takeLatest } from 'redux-saga/effects';
+
 import * as Types from './reduxTypes';
-import { ParsedQs } from 'qs';
 
 const [
 	LIST_POSTS,
@@ -35,11 +37,11 @@ const initialState: Types.postsStateType = {
 	posts: [
 		{
 			user: {
-				_id: '5ed4137c6f1d23528145f339b',
+				_id: '5ed4137c6f1d23528145f339b', //should be changed
 				username: 'yyhan2059',
 			},
 			tags: ['tag1', 'tag2'],
-			_id: '5ed95478b4aa8c222cdb58a5e',
+			_id: '5ed95478b4aa8c222cdb58a5e', //should be changed
 			title: 'sample1',
 			body: 'smaplebody',
 			publishedDate: '2020-06-04T20:07:20.991Z',
@@ -47,11 +49,11 @@ const initialState: Types.postsStateType = {
 		},
 		{
 			user: {
-				_id: '5ed4137c2226f41d2528145f339b',
+				_id: '5ed4137c2226f41d2528145f339b', //should be changed
 				username: 'yyhan0915',
 			},
 			tags: ['tag1', 'tag2'],
-			_id: '5ed95478b24aa8c22cdb58a5e',
+			_id: '5ed95478b24aa8c22cdb58a5e', //should be changed
 			title: 'sample2',
 			body: 'smaplebody',
 			publishedDate: '2020-06-04T20:07:20.991Z',

@@ -1,5 +1,4 @@
 import { createAction, handleActions } from 'redux-actions';
-import * as Types from './reduxTypes';
 
 const START_LOADING = 'loading/START_LOADING';
 const FINISH_LOADING = 'loading/FINISH_LOADING';
@@ -13,7 +12,7 @@ export const finishLoading = createAction(
 	(requestType: string) => requestType
 );
 
-const initialState: Types.loadingStateType = {};
+const initialState: RootState['loading'] = {};
 
 const loading = handleActions(
 	{

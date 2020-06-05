@@ -1,16 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { HelmetProvider } from 'react-helmet-async';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
+import { createLogger } from 'redux-logger';
+
+import './index.css';
+import App from './App';
 import rootReducer, { rootSaga } from './modules/index';
 import { tempSetUser, check } from './modules/user';
-import { createLogger } from 'redux-logger';
 
 const sagaMiddleware = createSagaMiddleware();
 const logger = createLogger();
@@ -37,7 +39,9 @@ loadUser();
 ReactDOM.render(
 	<Provider store={store}>
 		<BrowserRouter>
-			<App />
+			<HelmetProvider>
+				<App />
+			</HelmetProvider>
 		</BrowserRouter>
 	</Provider>,
 	document.getElementById('root')

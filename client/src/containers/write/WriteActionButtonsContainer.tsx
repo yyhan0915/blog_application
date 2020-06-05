@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import WriteActionButtons from '../../components/write/WriteActionButtons';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { writePost } from '../../modules/write';
+import { writePost, updatePost } from '../../modules/write';
 import { RouteComponentProps } from 'react-router-dom';
 import * as Types from '../../modules/reduxTypes';
 
@@ -27,6 +27,17 @@ const WriteActionButtonsContainer: React.FC<WriteActionButtonsContainerProps> = 
 
 	// 포스트 등록
 	const onPublish = () => {
+		if (originalPostId) {
+			dispatch(
+				updatePost({
+					title,
+					body,
+					tags,
+					id: originalPostId,
+				})
+			);
+			return;
+		}
 		dispatch(
 			writePost({
 				title,
@@ -51,7 +62,13 @@ const WriteActionButtonsContainer: React.FC<WriteActionButtonsContainerProps> = 
 			console.log(postError);
 		}
 	}, [history, post, postError]);
-	return <WriteActionButtons onPublish={onPublish} onCancel={onCancel} />;
+	return (
+		<WriteActionButtons
+			onPublish={onPublish}
+			onCancel={onCancel}
+			isEdit={!originalPostId}
+		/>
+	);
 };
 
 export default withRouter(WriteActionButtonsContainer);

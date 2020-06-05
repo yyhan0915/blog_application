@@ -32,13 +32,13 @@ const QuillWrapper = styled.div`
 	}
 `;
 
-interface eidtorProps {
+interface editorProps {
 	title: string;
 	body: string;
 	onChangeField: (quill: object) => void;
 }
 
-const Editor: React.FC<eidtorProps> = ({ title, body, onChangeField }) => {
+const Editor: React.FC<editorProps> = ({ title, body, onChangeField }) => {
 	const quillElement = useRef(null);
 	const quillInstance = useRef(null);
 
@@ -63,6 +63,14 @@ const Editor: React.FC<eidtorProps> = ({ title, body, onChangeField }) => {
 			}
 		});
 	}, [onChangeField]);
+
+	const mounted = useRef(false);
+
+	useEffect(() => {
+		if (mounted.current) return;
+		mounted.current = true;
+		quillInstance.current.root.innerHTML = body;
+	}, [body]);
 
 	const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
 		onChangeField({ key: 'title', value: e.target.value });
