@@ -24,14 +24,14 @@ following typical modules are introduced and applied.
 
 ## Getting started
 
-- Install dependencies
+1. Install dependencies
 npm install
 
-- server
+2. server
 cd server
 npm build
 npm start
 
-- client
+3. client
 cd client
 npm start
