@@ -9,9 +9,9 @@ import { takeLatest } from 'redux-saga/effects';
 
 import * as Types from './reduxTypes';
 
-const INITIALIZE = 'write/INITIALIZE';
-const SET_ORIGINAL_POST = 'write/SET_ORGINAL_POST';
-const CHANGE_FIELD = 'write/CHANGE_FIELD';
+const INITIALIZE = 'write/INITIALIZE' as const;
+const SET_ORIGINAL_POST = 'write/SET_ORIGINAL_POST' as const;
+const CHANGE_FIELD = 'write/CHANGE_FIELD' as const;
 const [
 	WRITE_POST,
 	WRITE_POST_SUCCESS,
@@ -58,12 +58,12 @@ export const writePost = createAction(
 	})
 );
 
-//creating saga
+// creating saga
 const writePostSaga = createRequestSaga(WRITE_POST, postAPI.writePost);
 const updatePostSaga = createRequestSaga(UPDATE_POST, postAPI.updatePost);
 export function* writeSaga() {
-	yield takeLatest(WRITE_POST as any, writePostSaga);
-	yield takeLatest(UPDATE_POST as any, updatePostSaga);
+	yield takeLatest(WRITE_POST, writePostSaga);
+	yield takeLatest(UPDATE_POST, updatePostSaga);
 }
 
 const initialState: Types.writeStateType = {

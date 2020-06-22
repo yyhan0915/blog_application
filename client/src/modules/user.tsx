@@ -8,12 +8,12 @@ import createRequestSaga, {
 
 import * as Types from './reduxTypes';
 
-const TEMP_SET_USER = 'user/TEMP_SET_USER';
+const TEMP_SET_USER = 'user/TEMP_SET_USER' as const;
 const [CHECK, CHECK_SUCCESS, CHECK_FAILURE] = createRequestActionTypes(
 	'user/CHECK'
 );
 
-const LOGOUT = 'user/LOGOUT';
+const LOGOUT = 'user/LOGOUT' as const;
 
 export const tempSetUser = createAction(TEMP_SET_USER, (user: any) => user);
 
@@ -26,7 +26,7 @@ function checkFailureSaga() {
 	try {
 		localStorage.removeItem('user');
 	} catch (e) {
-		console.log('localStorage is not working');
+		throw e;
 	}
 }
 
@@ -35,11 +35,11 @@ function* logoutSaga() {
 		yield call(authAPI.logout);
 		localStorage.removeItem('user');
 	} catch (e) {
-		console.log(e);
+		throw e;
 	}
 }
 export function* userSaga() {
-	yield takeLatest(CHECK as any, checkSaga);
+	yield takeLatest(CHECK, checkSaga);
 	yield takeLatest(CHECK_FAILURE, checkFailureSaga);
 	yield takeLatest(LOGOUT, logoutSaga);
 }
