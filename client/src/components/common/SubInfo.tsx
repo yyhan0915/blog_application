@@ -2,22 +2,21 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import palette from '../../lib/styles/palette';
-import { postStateType } from '../../modules/reduxTypes';
 
 interface SubInfoBlockProps {
-	hasMarginTop?: boolean;
-	publishedDate?: Date | string | number;
-	children?: JSX.Element[];
+    hasMarginTop?: boolean;
+    publishedDate?: Date | string | number;
+    children?: JSX.Element[];
 }
 interface SubInfoProps extends SubInfoBlockProps {
-	username: string;
+    username: string;
 }
 const SubInfoBlock = styled.div<SubInfoBlockProps>`
 	${props =>
-		props.hasMarginTop &&
-		css`
-			margin-top: 1rem;
-		`}
+        props.hasMarginTop &&
+        css`
+            margin-top: 1rem;
+        `}
         color : ${palette.gray[6]};
         span+span:before {
             color : ${palette.gray[4]};
@@ -28,20 +27,20 @@ const SubInfoBlock = styled.div<SubInfoBlockProps>`
 `;
 
 const SubInfo: React.FC<SubInfoProps> = ({
-	username,
-	publishedDate,
-	hasMarginTop,
+    username,
+    publishedDate,
+    hasMarginTop,
 }) => {
-	return (
-		<SubInfoBlock hasMarginTop={hasMarginTop}>
-			<span>
-				<b>
-					<Link to={`/@${username}`}>{username}</Link>
-				</b>
-			</span>
-			<span>{new Date(publishedDate).toLocaleDateString()}</span>
-		</SubInfoBlock>
-	);
+    return (
+        <SubInfoBlock hasMarginTop={hasMarginTop}>
+            <span>
+                <b>
+                    <Link to={`/@${username}`}>{username}</Link>
+                </b>
+            </span>
+            <span>{new Date(publishedDate).toLocaleDateString()}</span>
+        </SubInfoBlock>
+    );
 };
 
 export default SubInfo;

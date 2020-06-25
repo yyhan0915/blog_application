@@ -2,11 +2,6 @@ import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/user';
 
-type decodedType = {
-    _id: string;
-    username: string;
-    exp: number;
-};
 const jwtMiddleware = async (
     req: Request,
     res: Response,

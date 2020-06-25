@@ -2,121 +2,115 @@ import { createAction } from 'redux-actions';
 import { takeLatest } from 'redux-saga/effects';
 
 import createRequestSaga, {
-	createRequestActionTypes,
+    createRequestActionTypes,
 } from '../lib/createRequestSaga';
 import * as authAPI from '../lib/api/auth';
 
 import * as Types from './reduxTypes';
 
-const CHANGE_FIELD = 'auth/CHANGE_FIELD';
-const INITIALIZE_FORM = 'auth/INITIALIZE_FORM';
+const CHANGE_FIELD = 'auth/CHANGE_FIELD' as const;
+const INITIALIZE_FORM = 'auth/INITIALIZE_FORM' as const;
 
 const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] = createRequestActionTypes(
-	'auth/REGISTER'
+    'auth/REGISTER'
 );
 const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] = createRequestActionTypes(
-	'auth/LOGIN'
+    'auth/LOGIN'
 );
 
+//create Action
 export const changeField = createAction(
-	CHANGE_FIELD,
-	({ form, key, value }: Types.auth_changeFieldPayload) => ({
-		form, // register , login
-		key, // username, password, passwordConfirm
-		value, // 실제 바꾸려는 값
-	})
+    CHANGE_FIELD,
+    ({ form, key, value }: Types.auth_changeFieldPayload) => ({
+        form, // register , login
+        key, // username, password, passwordConfirm
+        value, // 실제 바꾸려는 값
+    })
 );
 export const initializeForm = createAction(
-	INITIALIZE_FORM,
-	(form: any) => form // register/login
+    INITIALIZE_FORM,
+    (form: any) => form // register/login
 );
 export const register = createAction(
-	REGISTER,
-	({ username, password }: Types.auth_userAccountPayload) => ({
-		username,
-		password,
-	})
+    REGISTER,
+    ({ username, password }: Types.auth_userAccountPayload) => ({
+        username,
+        password,
+    })
 );
 
 export const login = createAction(
-	LOGIN,
-	({ username, password }: Types.auth_userAccountPayload) => ({
-		username,
-		password,
-	})
+    LOGIN,
+    ({ username, password }: Types.auth_userAccountPayload) => ({
+        username,
+        password,
+    })
 );
-
+//action type
+type AuthAction =
+    | ReturnType<typeof changeField>
+    | ReturnType<typeof initializeForm>
+    | ReturnType<typeof register>
+    | ReturnType<typeof login>;
 //create Saga
 const registerSaga = createRequestSaga(REGISTER, authAPI.register);
 const loginSaga = createRequestSaga(LOGIN, authAPI.login);
 export function* authSaga() {
-	yield takeLatest(REGISTER as any, registerSaga);
-	yield takeLatest(LOGIN as any, loginSaga);
+    yield takeLatest(REGISTER as any, registerSaga);
+    yield takeLatest(LOGIN as any, loginSaga);
 }
 
 const initialState: Types.authStateType = {
-	register: {
-		username: '',
-		password: '',
-		passwordConfirm: '',
-	},
-	login: {
-		username: 'yyhan0915',
-		password: 'yyhan0915',
-	},
-	auth: null,
-	authError: null,
+    register: {
+        username: '',
+        password: '',
+        passwordConfirm: '',
+    },
+    login: {
+        username: '',
+        password: '',
+    },
+    auth: null,
+    authError: null,
 };
 
-function auth(
-	state = initialState,
-	action: {
-		type: string;
-		payload: {
-			form: string;
-			key: string | number;
-			value: string | number;
-			auth: string | number;
-			error: string | number | boolean;
-		};
-	}
-) {
-	switch (action.type) {
-		case CHANGE_FIELD: {
-			let newState = { register: state.register, login: state.login };
-			return {
-				...newState,
-				[action.payload.form]: {
-					...[action.payload.form],
-					[action.payload.key]: action.payload.value,
-				},
-			};
-			// let newState = { ...state };
-			// newState[action.payload.form];
-			// return produce(state, draft => {
-			// 	draft[action.payload.form][action.payload.key] = action.payload.value; // 예: state.register.username을 바꾼다
-		}
-		case INITIALIZE_FORM:
-			return {
-				...state,
-				[action.payload.form]: state[action.payload.form],
-				authError: null,
-			};
-		case REGISTER_SUCCESS:
-			return {
-				...state,
-				authError: null as null,
-				auth: action.payload.auth,
-			};
-		case REGISTER_FAILURE:
-			return { ...state, authError: action.payload.error };
-		case LOGIN_SUCCESS:
-			return { ...state, authError: null, auth: action.payload.auth };
-		case LOGIN_FAILURE:
-			return { ...state, authError: action.payload.error };
-		default:
-			return state;
-	}
+function auth(state = initialState, action: AuthAction) {
+    switch (action.type) {
+        case CHANGE_FIELD: {
+            let newState = { register: state.register, login: state.login };
+            return {
+                ...newState,
+                [action.payload.form]: {
+                    ...[action.payload.form],
+                    [action.payload.key]: action.payload.value,
+                },
+            };
+            // let newState = { ...state };
+            // newState[action.payload.form];
+            // return produce(state, draft => {
+            // 	draft[action.payload.form][action.payload.key] = action.payload.value; // 예: state.register.username을 바꾼다
+        }
+        case INITIALIZE_FORM:
+            return {
+                ...state,
+                [action.payload.form]: state[action.payload.form],
+                authError: null,
+            };
+        case REGISTER_SUCCESS:
+            return {
+                ...state,
+                authError: null as null,
+                auth: action.payload.auth,
+            };
+        case REGISTER_FAILURE:
+            return { ...state, authError: action.payload.error };
+        case LOGIN_SUCCESS:
+            return { ...state, authError: null, auth: action.payload.auth };
+        case LOGIN_FAILURE:
+            return { ...state, authError: action.payload.error };
+        default:
+            return state;
+    }
 }
 
 // const auth = handleActions(
