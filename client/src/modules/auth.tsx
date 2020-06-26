@@ -1,5 +1,6 @@
-import { createAction } from 'redux-actions';
+import { createAction, handleActions } from 'redux-actions';
 import { takeLatest } from 'redux-saga/effects';
+import produce from 'immer';
 
 import createRequestSaga, {
     createRequestActionTypes,
@@ -74,44 +75,42 @@ const initialState: Types.authStateType = {
     authError: null,
 };
 
-function auth(state = initialState, action: AuthAction) {
-    switch (action.type) {
-        case CHANGE_FIELD: {
-            let newState = { register: state.register, login: state.login };
-            return {
-                ...newState,
-                [action.payload.form]: {
-                    ...[action.payload.form],
-                    [action.payload.key]: action.payload.value,
-                },
-            };
-            // let newState = { ...state };
-            // newState[action.payload.form];
-            // return produce(state, draft => {
-            // 	draft[action.payload.form][action.payload.key] = action.payload.value; // 예: state.register.username을 바꾼다
-        }
-        case INITIALIZE_FORM:
-            return {
-                ...state,
-                [action.payload.form]: state[action.payload.form],
-                authError: null,
-            };
-        case REGISTER_SUCCESS:
-            return {
-                ...state,
-                authError: null as null,
-                auth: action.payload.auth,
-            };
-        case REGISTER_FAILURE:
-            return { ...state, authError: action.payload.error };
-        case LOGIN_SUCCESS:
-            return { ...state, authError: null, auth: action.payload.auth };
-        case LOGIN_FAILURE:
-            return { ...state, authError: action.payload.error };
-        default:
-            return state;
-    }
-}
+const auth = handleActions(
+    {
+        [CHANGE_FIELD]: (state, { payload: { form, key, value } }) =>
+            produce(state, draft => {
+                draft[form as string][key as string] = value; // 예: state.register.username을 바꾼다
+            }),
+        [INITIALIZE_FORM]: (state, { payload: form }) => ({
+            ...state,
+            [form as any]: initialState[form as any],
+            authError: null, // 폼 전환 시 회원 인증 에러 초기화
+        }),
+        // 회원가입 성공
+        [REGISTER_SUCCESS]: (state, { payload: auth }) => ({
+            ...state,
+            authError: null,
+            auth,
+        }),
+        // 회원가입 실패
+        [REGISTER_FAILURE]: (state, { payload: error }) => ({
+            ...state,
+            authError: error,
+        }),
+        // 로그인 성공
+        [LOGIN_SUCCESS]: (state, { payload: auth }) => ({
+            ...state,
+            authError: null,
+            auth,
+        }),
+        // 로그인 실패
+        [LOGIN_FAILURE]: (state, { payload: error }) => ({
+            ...state,
+            authError: error,
+        }),
+    },
+    initialState
+);
 
 // const auth = handleActions(
 // 	{

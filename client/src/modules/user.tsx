@@ -3,14 +3,14 @@ import { takeLatest, call } from 'redux-saga/effects';
 
 import * as authAPI from '../lib/api/auth';
 import createRequestSaga, {
-	createRequestActionTypes,
+    createRequestActionTypes,
 } from '../lib/createRequestSaga';
 
 import * as Types from './reduxTypes';
 
 const TEMP_SET_USER = 'user/TEMP_SET_USER' as const;
 const [CHECK, CHECK_SUCCESS, CHECK_FAILURE] = createRequestActionTypes(
-	'user/CHECK'
+    'user/CHECK'
 );
 
 const LOGOUT = 'user/LOGOUT' as const;
@@ -23,63 +23,63 @@ export const logout = createAction(LOGOUT);
 const checkSaga = createRequestSaga(CHECK, authAPI.check);
 
 function checkFailureSaga() {
-	try {
-		localStorage.removeItem('user');
-	} catch (e) {
-		throw e;
-	}
+    try {
+        localStorage.removeItem('user');
+    } catch (e) {
+        throw e;
+    }
 }
 
 function* logoutSaga() {
-	try {
-		yield call(authAPI.logout);
-		localStorage.removeItem('user');
-	} catch (e) {
-		throw e;
-	}
+    try {
+        yield call(authAPI.logout);
+        localStorage.removeItem('user');
+    } catch (e) {
+        throw e;
+    }
 }
 export function* userSaga() {
-	yield takeLatest(CHECK, checkSaga);
-	yield takeLatest(CHECK_FAILURE, checkFailureSaga);
-	yield takeLatest(LOGOUT, logoutSaga);
+    yield takeLatest(CHECK as any, checkSaga);
+    yield takeLatest(CHECK_FAILURE, checkFailureSaga);
+    yield takeLatest(LOGOUT, logoutSaga);
 }
 
 const initialState: Types.userStateType = {
-	user: null,
-	checkError: null,
+    user: null,
+    checkError: null,
 };
 
 function user(
-	state = initialState,
-	action: { type: any; payload: { user: any; error: any } }
+    state = initialState,
+    action: { type: any; payload: { user: any; error: any } }
 ) {
-	switch (action.type) {
-		case TEMP_SET_USER:
-			return {
-				...state,
-				user: action.payload.user,
-			};
-		case CHECK_SUCCESS:
-			return {
-				...state,
-				user: action.payload.user,
-				checkError: null,
-			};
-		case CHECK_FAILURE:
-			return {
-				...state,
-				user: null as null,
-				checkError: action.payload.error,
-			};
+    switch (action.type) {
+        case TEMP_SET_USER:
+            return {
+                ...state,
+                user: action.payload.user,
+            };
+        case CHECK_SUCCESS:
+            return {
+                ...state,
+                user: action.payload.user,
+                checkError: null,
+            };
+        case CHECK_FAILURE:
+            return {
+                ...state,
+                user: null as null,
+                checkError: action.payload.error,
+            };
 
-		case LOGOUT:
-			return {
-				...state,
-				user: null,
-			};
-		default:
-			return state;
-	}
+        case LOGOUT:
+            return {
+                ...state,
+                user: null,
+            };
+        default:
+            return state;
+    }
 }
 // const user = handleActions(
 // 	{

@@ -1,11 +1,33 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import { Schema, Document, Model, model } from 'mongoose';
 import bcrypt from 'bcrypt';
-import jwt, { TokenExpiredError } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
+
+// Document Interface
+
+export interface IUserDocument extends Document {
+    // properties
+    username: string;
+    hashedPassword: string;
+
+    //methods
+    setPassword: (password: string) => Promise<void>;
+    checkPassword: (password: string) => Promise<boolean>;
+    serialize: (a: void) => any;
+    generateToken: () => string;
+}
+
+// Model Interface
+export interface IUserModel extends Model<IUserDocument> {
+    findByUsername: (username: string) => Promise<IUserDocument>;
+}
+
+// Declare Schema
 const UserSchema = new Schema({
     username: String,
     hashedPassword: String,
 });
 
+// instance method
 UserSchema.methods.setPassword = async function (password: string) {
     const hash = await bcrypt.hash(password, 10);
     this.hashedPassword = hash;
@@ -30,25 +52,13 @@ UserSchema.methods.generateToken = function () {
     );
     return token;
 };
+
+// static method
 UserSchema.statics.findByUsername = function (username: string) {
     return this.findOne({ username });
 };
 
-export interface IUserDocument extends Document {
-    username: string;
-    password: string;
-    setPassword: (password: string) => void;
-    checkPassword: (password: string) => boolean;
-    serialize: () => void;
-    generateToken: () => string;
-}
-export interface IUserModel extends mongoose.Model<IUserDocument> {
-    findByUsername: (username: string) => IUserDocument;
-}
-
-const User: IUserModel = mongoose.model<IUserDocument, IUserModel>(
-    'User',
-    UserSchema
-);
+// Declare model
+const User: IUserModel = model<IUserDocument, IUserModel>('User', UserSchema);
 
 export default User;

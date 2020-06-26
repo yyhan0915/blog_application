@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
 import createRequestSaga, {
-	createRequestActionTypes,
+    createRequestActionTypes,
 } from '../lib/createRequestSaga';
 import { ReactText } from 'react';
 
@@ -13,106 +13,114 @@ const INITIALIZE = 'write/INITIALIZE' as const;
 const SET_ORIGINAL_POST = 'write/SET_ORIGINAL_POST' as const;
 const CHANGE_FIELD = 'write/CHANGE_FIELD' as const;
 const [
-	WRITE_POST,
-	WRITE_POST_SUCCESS,
-	WRITE_POST_FAILURE,
+    WRITE_POST,
+    WRITE_POST_SUCCESS,
+    WRITE_POST_FAILURE,
 ] = createRequestActionTypes('write/WRITE_POST');
 const [
-	UPDATE_POST,
-	UPDATE_POST_SUCCESS,
-	UPDATE_POST_FAILURE,
+    UPDATE_POST,
+    UPDATE_POST_SUCCESS,
+    UPDATE_POST_FAILURE,
 ] = createRequestActionTypes('write/UPDATE_POST');
 
 export const updatePost = createAction(
-	UPDATE_POST,
-	({
-		id,
-		title,
-		body,
-		tags,
-	}: {
-		id: ReactText | string;
-		title: string;
-		body: string;
-		tags: string[];
-	}) => ({ id, title, body, tags })
+    UPDATE_POST,
+    ({
+        id,
+        title,
+        body,
+        tags,
+    }: {
+        id: ReactText | string;
+        title: string;
+        body: string;
+        tags: string[];
+    }) => ({ id, title, body, tags })
 );
 export const setOriginalPost = createAction(
-	SET_ORIGINAL_POST,
-	(post: any) => post
+    SET_ORIGINAL_POST,
+    (post: any) => post
 );
 export const initialize = createAction(INITIALIZE);
 export const changeField = createAction(
-	CHANGE_FIELD,
-	({ key, value }: { key: string; value: string[] }) => ({
-		key,
-		value,
-	})
+    CHANGE_FIELD,
+    ({ key, value }: { key: string; value: string[] }) => ({
+        key,
+        value,
+    })
 );
 export const writePost = createAction(
-	WRITE_POST,
-	({ title, body, tags }: { title: string; body: string; tags: string[] }) => ({
-		title,
-		body,
-		tags,
-	})
+    WRITE_POST,
+    ({
+        title,
+        body,
+        tags,
+    }: {
+        title: string;
+        body: string;
+        tags: string[];
+    }) => ({
+        title,
+        body,
+        tags,
+    })
 );
 
 // creating saga
 const writePostSaga = createRequestSaga(WRITE_POST, postAPI.writePost);
 const updatePostSaga = createRequestSaga(UPDATE_POST, postAPI.updatePost);
 export function* writeSaga() {
-	yield takeLatest(WRITE_POST, writePostSaga);
-	yield takeLatest(UPDATE_POST, updatePostSaga);
+    yield takeLatest(WRITE_POST as any, writePostSaga);
+    yield takeLatest(UPDATE_POST as any, updatePostSaga);
 }
 
 const initialState: Types.writeStateType = {
-	title: '',
-	body: '',
-	tags: [],
-	post: null,
-	postError: null,
-	originalPostId: null,
+    title: '',
+    body: '',
+    tags: [],
+    post: null,
+    postError: null,
+    originalPostId: null,
 };
 
 function write(
-	state = initialState,
-	action: {
-		type: string;
-		payload: {
-			key: string;
-			value: string;
-			post: { title: string; body: string; tags: string; _id: string };
-			postError: any;
-		};
-	}
+    state = initialState,
+    action: {
+        type: string;
+        payload: {
+            key: string;
+            value: string;
+            post: { title: string; body: string; tags: string; _id: string };
+            postError: any;
+        };
+    }
 ) {
-	switch (action.type) {
-		case INITIALIZE:
-			return { ...initialState };
-		case CHANGE_FIELD:
-			return { ...state, [action.payload.key]: action.payload.value };
-		case WRITE_POST:
-			return { ...state, post: null, postError: null };
-		case WRITE_POST_SUCCESS:
-			return { ...state, post: action.payload.post };
-		case WRITE_POST_FAILURE:
-			return { ...state, postError: action.payload.postError };
-		case SET_ORIGINAL_POST:
-			return {
-				...state,
-				title: action.payload.post.title,
-				body: action.payload.post.body,
-				tags: action.payload.post.tags,
-				originalPostId: action.payload.post._id,
-			};
-		case UPDATE_POST_SUCCESS:
-			return { ...state, post: action.payload.post };
-		case UPDATE_POST_FAILURE:
-			return { ...state, postError: action.payload.postError };
-		default:
-			return initialState;
-	}
+    switch (action.type) {
+        case INITIALIZE:
+            return { ...initialState };
+        case CHANGE_FIELD:
+            return { ...state, [action.payload.key]: action.payload.value };
+        case WRITE_POST:
+            return { ...state, post: null, postError: null };
+        case WRITE_POST_SUCCESS:
+            return { ...state, post: action.payload.post };
+        case WRITE_POST_FAILURE:
+            return { ...state, postError: action.payload.postError };
+        case SET_ORIGINAL_POST:
+            return {
+                ...state,
+                title: action.payload.post.title,
+                body: action.payload.post.body,
+                tags: action.payload.post.tags,
+                originalPostId: action.payload.post._id,
+            };
+        case UPDATE_POST_SUCCESS:
+            return { ...state, post: action.payload.post };
+        case UPDATE_POST_FAILURE:
+            return { ...state, postError: action.payload.postError };
+        default:
+            return initialState;
+    }
 }
 
 export default write;

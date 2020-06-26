@@ -1,6 +1,6 @@
-import { createAction } from 'redux-actions';
+import { ActionType, createReducer } from 'typesafe-actions';
 import { takeLatest } from 'redux-saga/effects';
-import { ParsedQs } from 'qs';
+import { createAction } from 'redux-actions';
 
 import createRequestSaga, {
     createRequestActionTypes,
@@ -8,12 +8,19 @@ import createRequestSaga, {
 import * as postsAPI from '../lib/api/posts';
 
 import * as Types from './reduxTypes';
+import { ParsedQs } from 'qs';
 
 const [
     LIST_POSTS,
     LIST_POSTS_SUCCESS,
     LIST_POSTS_FAILURE,
 ] = createRequestActionTypes('posts/LIST_POSTS');
+
+// export const listPosts = createAction(LIST_POSTS)<{
+//     tag: string | string[] | ParsedQs | ParsedQs[];
+//     username: string | string[] | ParsedQs | ParsedQs[];
+//     page: string | string[] | ParsedQs | ParsedQs[];
+// }>();
 
 export const listPosts = createAction(
     LIST_POSTS,
@@ -34,35 +41,7 @@ export function* postsSaga() {
 }
 
 const initialState: Types.postsStateType = {
-    posts: [
-        {
-            user: { _id: '5ed4137c6f1d2528145f339b', username: 'yyhan2059' },
-            tags: ['tag1', 'tag2'],
-            _id: '5eda8e22c3f8c297bcab0f59',
-            title: 'sample3',
-            body: 'smaplebody smapleboplebody',
-            publishedDate: '2020-06-05T18:25:38.714Z',
-            __v: 0,
-        },
-        {
-            user: { _id: '5ed4137c6f1d2528145f339b', username: 'yyhan2059' },
-            tags: ['tag1', 'tag2'],
-            _id: '5eda8e16c3f8c297bcab0f58',
-            title: 'sample2',
-            body: 'smaplebody',
-            publishedDate: '2020-06-05T18:25:26.175Z',
-            __v: 0,
-        },
-        {
-            user: { _id: '5ed4137c6f1d2528145f339b', username: 'yyhan2059' },
-            tags: ['tag1', 'tag2'],
-            _id: '5ed95478b4aa8c22cdb58a5e',
-            title: 'sample1',
-            body: 'smaplebody',
-            publishedDate: '2020-06-04T20:07:20.991Z',
-            __v: 0,
-        },
-    ],
+    posts: [],
     error: null,
 };
 

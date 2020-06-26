@@ -33,11 +33,11 @@ export const register = async (req: Request, res: Response) => {
         res.end(JSON.stringify(user.serialize()));
     } catch (e) {
         console.log(e);
-        res.status(500);
-        res.end();
+        res.status(500).end();
     }
 };
 export const login = async (req: Request, res: Response) => {
+    console.log('req is ', req.body);
     const { username, password } = req.body;
     if (!username || !password) {
         return res.status(401);
@@ -45,11 +45,11 @@ export const login = async (req: Request, res: Response) => {
     try {
         const user = await User.findByUsername(username);
         if (!user) {
-            return res.status(401);
+            return res.status(401).end('user is not existed');
         }
         const valid = await user.checkPassword(password);
         if (!valid) {
-            return res.status(401);
+            return res.status(401).end('password is wrong');
         }
 
         const token = user.generateToken();
@@ -57,6 +57,7 @@ export const login = async (req: Request, res: Response) => {
             maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly: true,
         });
+        console.log(user.serialize());
         res.status(200);
         res.end(JSON.stringify(user.serialize()));
     } catch (e) {

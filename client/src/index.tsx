@@ -18,33 +18,33 @@ const sagaMiddleware = createSagaMiddleware();
 const logger = createLogger();
 
 const store = createStore(
-	rootReducer,
-	composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
+    rootReducer,
+    composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
 );
 
 function loadUser() {
-	try {
-		const user = localStorage.getItem('user');
-		if (!user) return;
-		store.dispatch(tempSetUser(user));
-		store.dispatch(check());
-	} catch (e) {
-		console.log('localStorage is not working');
-	}
+    try {
+        const user = localStorage.getItem('user');
+        if (!user) return;
+        store.dispatch(tempSetUser(user));
+        store.dispatch(check());
+    } catch (e) {
+        console.log('localStorage is not working');
+    }
 }
 
 sagaMiddleware.run(rootSaga);
 loadUser();
 
 ReactDOM.render(
-	<Provider store={store}>
-		<BrowserRouter>
-			<HelmetProvider>
-				<App />
-			</HelmetProvider>
-		</BrowserRouter>
-	</Provider>,
-	document.getElementById('root')
+    <Provider store={store}>
+        <BrowserRouter>
+            <HelmetProvider>
+                <App />
+            </HelmetProvider>
+        </BrowserRouter>
+    </Provider>,
+    document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change
