@@ -30,11 +30,11 @@ const WhiteBox = styled.div`
 	border-radius: 2px;
 `;
 
-type PropsAuthTemplate = {
+type AuthTemplateProps = {
 	children: string | JSX.Element;
 };
 
-const AuthTemplate: React.FC<PropsAuthTemplate> = ({ children }) => {
+const AuthTemplate: React.FC<AuthTemplateProps> = ({ children }) => {
 	return (
 		<AuthTemplateBlock>
 			<WhiteBox>

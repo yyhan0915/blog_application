@@ -1,12 +1,12 @@
 import React from 'react';
 import AskModal from '../common/AskModal';
 
-interface AskRemoveModal {
+interface AskRemoveModalProps {
 	visible: boolean;
 	onConfirm: () => void;
 	onCancel: () => void;
 }
-export const AskRemoveModal: React.FC<AskRemoveModal> = ({
+export const AskRemoveModal: React.FC<AskRemoveModalProps> = ({
 	visible,
 	onConfirm,
 	onCancel,

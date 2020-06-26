@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import styled, { StyledComponent } from 'styled-components';
 
-export interface responsiveProps {
+export interface ResponsiveProps {
 	children: ReactElement[] | Element | string;
 }
-const ResponsiveBlock: StyledComponent<'div', any, {}, never> = styled.div`
+const ResponsiveBlock = styled.div`
 	padding-left: 1rem;
 	padding-right: 1rem;
 	width: 1024px;
@@ -18,7 +18,7 @@ const ResponsiveBlock: StyledComponent<'div', any, {}, never> = styled.div`
 	}
 `;
 
-const Responsive: React.FC<responsiveProps> = ({ children, ...rest }) => {
+const Responsive: React.FC<ResponsiveProps> = ({ children, ...rest }) => {
 	return <ResponsiveBlock {...rest}>{children}</ResponsiveBlock>;
 };
 

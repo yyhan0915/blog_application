@@ -3,6 +3,10 @@ import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import palette from '../../lib/styles/palette';
 
+interface TagsProps {
+	tags: string[];
+}
+
 const TagsBlock = styled.div`
 	margin-top: 0.5rem;
 	.tag {
@@ -16,7 +20,7 @@ const TagsBlock = styled.div`
 	}
 `;
 
-const Tags = ({ tags }: { tags: string[] }) => {
+const Tags: React.FC<TagsProps> = ({ tags }) => {
 	return (
 		<TagsBlock>
 			{tags.map(tag => (

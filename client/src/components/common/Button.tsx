@@ -4,7 +4,7 @@ import palette from '../../lib/styles/palette';
 import { Link } from 'react-router-dom';
 
 //버튼의 props
-interface buttonProps {
+interface ButtonProps {
 	children: string | ReactNode;
 	style?: object;
 	fullWidth?: boolean;
@@ -13,7 +13,7 @@ interface buttonProps {
 	onClick?: () => void;
 }
 
-const buttonStyle = css<buttonProps>`
+const buttonStyle = css<ButtonProps>`
 	border: none;
 	border-radius: 4px;
 	font-size: 1rem;
@@ -44,15 +44,15 @@ const buttonStyle = css<buttonProps>`
 		`}
 `;
 
-const StyledButton = styled.button<buttonProps>`
+const StyledButton = styled.button<ButtonProps>`
 	${buttonStyle}
 `;
 
-const StyledLink = styled(Link)<buttonProps>`
+const StyledLink = styled(Link)<ButtonProps>`
 	${buttonStyle}
 `;
 
-const Button: React.FC<buttonProps> = ({ to, cyan, ...rest }) => {
+const Button: React.FC<ButtonProps> = ({ to, cyan, ...rest }) => {
 	return to ? (
 		<StyledLink {...rest} to={to} cyan={cyan ? 1 : 0} />
 	) : (
