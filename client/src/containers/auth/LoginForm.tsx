@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeField, initializeForm, login } from '../../modules/auth';
+import { changeField, initializeForm, loginSaga } from '../../modules/auth';
 import AuthForm from '../../components/auth/AuthForm';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { check } from '../../modules/user';
@@ -29,10 +29,11 @@ const LoginForm: React.SFC<RouteComponentProps> = ({ history }) => {
         );
     };
 
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const { username, password } = form;
-        dispatch(login({ username, password }));
+        await dispatch(loginSaga({ username, password }));
+        await dispatch(check(username));
     };
 
     useEffect(() => {

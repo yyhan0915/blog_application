@@ -90,8 +90,12 @@ function write(
         payload: {
             key: string;
             value: string;
-            post: { title: string; body: string; tags: string; _id: string };
+            post: any;
             postError: any;
+            title: string;
+            body: string;
+            tags: string[] | string;
+            _id: string;
         };
     }
 ) {
@@ -103,16 +107,16 @@ function write(
         case WRITE_POST:
             return { ...state, post: null, postError: null };
         case WRITE_POST_SUCCESS:
-            return { ...state, post: action.payload.post };
+            return { ...state, post: action.payload };
         case WRITE_POST_FAILURE:
-            return { ...state, postError: action.payload.postError };
+            return { ...state, postError: action.payload };
         case SET_ORIGINAL_POST:
             return {
                 ...state,
-                title: action.payload.post.title,
-                body: action.payload.post.body,
-                tags: action.payload.post.tags,
-                originalPostId: action.payload.post._id,
+                title: action.payload.title,
+                body: action.payload.body,
+                tags: action.payload.tags,
+                originalPostId: action.payload._id,
             };
         case UPDATE_POST_SUCCESS:
             return { ...state, post: action.payload.post };

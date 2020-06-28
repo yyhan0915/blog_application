@@ -49,27 +49,24 @@ const initialState: Types.userStateType = {
     checkError: null,
 };
 
-function user(
-    state = initialState,
-    action: { type: any; payload: { user: any; error: any } }
-) {
+function user(state = initialState, action: { type: any; payload: any }) {
     switch (action.type) {
         case TEMP_SET_USER:
             return {
                 ...state,
-                user: action.payload.user,
+                user: action.payload,
             };
         case CHECK_SUCCESS:
             return {
                 ...state,
-                user: action.payload.user,
+                user: action.payload,
                 checkError: null,
             };
         case CHECK_FAILURE:
             return {
                 ...state,
                 user: null as null,
-                checkError: action.payload.error,
+                checkError: action.payload,
             };
 
         case LOGOUT:

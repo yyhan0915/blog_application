@@ -1,10 +1,12 @@
 {
-	"defaultSeverity": "error",
-	"extends": ["tslint:recommended", "tslint-config-prettier"],
-	"jsRules": {},
-	"rules": {
-		"semicolon": true,
-		"arrow-parens": false
-	},
-	"rulesDirectory": []
+    "defaultSeverity": "error",
+    "extends": ["tslint:recommended", "tslint-config-prettier"],
+    "jsRules": {},
+    "rules": {
+        "semicolon": true,
+        "arrow-parens": false,
+        "no-unused-variable": true,
+        "no-console": false
+    },
+    "rulesDirectory": []
 }

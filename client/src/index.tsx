@@ -8,6 +8,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import { createLogger } from 'redux-logger';
+import ReduxThunk from 'redux-thunk';
 
 import './index.css';
 import App from './App';
@@ -19,7 +20,7 @@ const logger = createLogger();
 
 const store = createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
+    composeWithDevTools(applyMiddleware(logger, ReduxThunk, sagaMiddleware))
 );
 
 function loadUser() {

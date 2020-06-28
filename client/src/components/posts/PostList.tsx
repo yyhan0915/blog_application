@@ -40,7 +40,7 @@ const PostItemBlock = styled.div`
     }
 `;
 
-type postBasic = {
+type PostBasicType = {
     publishedDate: Date;
     user?: { username?: string };
     tags: string[];
@@ -49,7 +49,7 @@ type postBasic = {
     _id: number;
 };
 interface PostItemProps {
-    post: postBasic;
+    post: PostBasicType;
 }
 const PostItem: React.FC<PostItemProps> = ({ post }) => {
     const { publishedDate, user, tags, title, body, _id } = post;
@@ -68,13 +68,14 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
     );
 };
 
-export interface PostListProps {
-    posts: postBasic[];
+export interface IPostListProps {
+    posts: PostBasicType[];
     loading: string;
     error: string;
     showWriteButton: userStateType['user'];
+    lastPage?: boolean;
 }
-const PostList: React.FC<PostListProps> = ({
+const PostList: React.FC<IPostListProps> = ({
     posts,
     loading,
     error,

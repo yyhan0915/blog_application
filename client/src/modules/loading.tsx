@@ -1,16 +1,16 @@
 // import { createAction, handleActions } from 'redux-actions';
-import { createAction, ActionType, createReducer } from 'typesafe-actions';
+import { ActionType, createReducer } from 'typesafe-actions';
 
 const START_LOADING = 'loading/START_LOADING' as const;
 const FINISH_LOADING = 'loading/FINISH_LOADING' as const;
 
 export const startLoading = (requestType: string) => ({
-	type: START_LOADING,
-	payload: requestType,
+    type: START_LOADING,
+    payload: requestType,
 });
 export const finishLoading = (requestType: string) => ({
-	type: FINISH_LOADING,
-	payload: requestType,
+    type: FINISH_LOADING,
+    payload: requestType,
 });
 // export const startLoading = createAction(START_LOADING)<string>();
 // export const finishLoading = createAction(FINISH_LOADING)<string>();
@@ -20,14 +20,17 @@ type LoadingAction = ActionType<typeof actions>;
 
 const initialState: RootState['loading'] = {};
 const loading = createReducer<RootState['loading'], LoadingAction>(
-	initialState,
-	{
-		[START_LOADING]: (state, action) => ({ ...state, [action.payload]: true }),
-		[FINISH_LOADING]: (state, action) => ({
-			...state,
-			[action.payload]: false,
-		}),
-	}
+    initialState,
+    {
+        [START_LOADING]: (state, action) => ({
+            ...state,
+            [action.payload]: true,
+        }),
+        [FINISH_LOADING]: (state, action) => ({
+            ...state,
+            [action.payload]: false,
+        }),
+    }
 );
 // export const startLoading = createStandardAction<string>(START_LOADING)();
 // export const finishLoading = createStandardAction<string>(FINISH_LOADING)();

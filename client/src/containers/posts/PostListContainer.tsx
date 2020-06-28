@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import PostList from '../../components/posts/PostList';
 import { listPosts } from '../../modules/posts';
 import { loadingStateType, userStateType } from '../../modules/reduxTypes';
-import { PostListProps } from '../../components/posts/PostList';
+import { IPostListProps } from '../../components/posts/PostList';
 
 interface MatchParams {
     parse?: string;
+    username: string;
 }
 const PostListContainer: React.FC<RouteComponentProps<MatchParams>> = ({
     location,
@@ -21,7 +22,7 @@ const PostListContainer: React.FC<RouteComponentProps<MatchParams>> = ({
             loading,
             user,
         }: {
-            posts: PostListProps;
+            posts: IPostListProps;
             loading: loadingStateType;
             user: userStateType;
         }) => ({
@@ -33,7 +34,8 @@ const PostListContainer: React.FC<RouteComponentProps<MatchParams>> = ({
     );
 
     useEffect(() => {
-        const { tag, username, page } = qs.parse(location.search, {
+        const { username } = match.params;
+        const { tag, page } = qs.parse(location.search, {
             ignoreQueryPrefix: true,
         });
         dispatch(listPosts({ tag, username, page }));

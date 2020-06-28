@@ -8,6 +8,7 @@ import createRequestSaga, {
 import * as authAPI from '../lib/api/auth';
 
 import * as Types from './reduxTypes';
+// import { check } from './user';
 
 const CHANGE_FIELD = 'auth/CHANGE_FIELD' as const;
 const INITIALIZE_FORM = 'auth/INITIALIZE_FORM' as const;
@@ -15,11 +16,15 @@ const INITIALIZE_FORM = 'auth/INITIALIZE_FORM' as const;
 const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] = createRequestActionTypes(
     'auth/REGISTER'
 );
-const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] = createRequestActionTypes(
-    'auth/LOGIN'
-);
 
-//create Action
+const LOGIN = 'auth/LOGIN';
+const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
+const LOGIN_FAILURE = 'auth/LOGIN_FAILURE';
+// const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] = createRequestActionTypes(
+//     'auth/LOGIN'
+// );
+
+// create Action
 export const changeField = createAction(
     CHANGE_FIELD,
     ({ form, key, value }: Types.auth_changeFieldPayload) => ({
@@ -47,18 +52,37 @@ export const login = createAction(
         password,
     })
 );
-//action type
+
+export const loginSaga = ({ username, password }: any) => async (
+    dispatch: any
+) => {
+    dispatch({ type: LOGIN });
+    try {
+        await authAPI.login({ username, password });
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: true,
+        });
+    } catch (e) {
+        dispatch({
+            type: LOGIN_FAILURE,
+            payload: e,
+            error: true,
+        });
+    }
+};
+// const loginSaga = createRequestSaga(LOGIN, authAPI.login);
+// action type
 type AuthAction =
     | ReturnType<typeof changeField>
     | ReturnType<typeof initializeForm>
     | ReturnType<typeof register>
     | ReturnType<typeof login>;
-//create Saga
+// create Saga
 const registerSaga = createRequestSaga(REGISTER, authAPI.register);
-const loginSaga = createRequestSaga(LOGIN, authAPI.login);
+// const loginSaga = createRequestSaga(LOGIN, authAPI.login);
 export function* authSaga() {
     yield takeLatest(REGISTER as any, registerSaga);
-    yield takeLatest(LOGIN as any, loginSaga);
 }
 
 const initialState: Types.authStateType = {

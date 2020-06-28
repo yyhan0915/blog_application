@@ -1,5 +1,4 @@
-import redux from 'redux';
-//auth
+// auth
 export interface authStateType {
     [id: string]: object | string | null;
 }
@@ -16,14 +15,14 @@ export type auth_userAccountPayload = {
     username: string;
     password: string;
 };
-//loading
+// loading
 export interface loadingStateType {}
-//user
+// user
 export interface userStateType {
     user: { user: string; username: string; _id?: string };
     checkError: null | string;
 }
-//write
+// write
 export interface writeStateType {
     title: string;
     body: string;
@@ -59,7 +58,7 @@ export interface postStateType {
     error: any;
 }
 
-//posts
+// posts
 export interface postsStateType {
     posts: postStateType['post'][];
     error: null | any;

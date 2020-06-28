@@ -28,14 +28,14 @@ const RegisterForm: React.FC<RouteComponentProps> = ({ history }) => {
         );
     };
 
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const { username, password, passwordConfirm } = form;
         if ([username, password, passwordConfirm].includes('')) {
             setError('fill all blanks');
             return;
         }
-        //비밀번호가 일치하지 않는다면
+        // 비밀번호가 일치하지 않는다면
         if (password !== passwordConfirm) {
             setError('비밀번호가 일치하지 않습니다.');
             dispatch(
@@ -50,7 +50,8 @@ const RegisterForm: React.FC<RouteComponentProps> = ({ history }) => {
             );
             return;
         }
-        dispatch(register({ username, password }));
+        await dispatch(register({ username, password }));
+        await dispatch(check(username));
     };
 
     useEffect(() => {
@@ -59,8 +60,6 @@ const RegisterForm: React.FC<RouteComponentProps> = ({ history }) => {
 
     useEffect(() => {
         if (authError) {
-            console.log('error occur');
-            console.log(authError);
             if (authError.response.status === 409) {
                 setError('이미 존재하는 계정입니다.');
                 return;
@@ -69,7 +68,7 @@ const RegisterForm: React.FC<RouteComponentProps> = ({ history }) => {
             return;
         }
         if (auth) {
-            console.log('succeed to register');
+            console.log('회원가입 성공');
             console.log(auth);
             dispatch(check());
         }

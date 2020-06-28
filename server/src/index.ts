@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import express, { Application } from 'express';
+import express, { Application, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import path from 'path';
@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-// Settings
+// Middlewares
 app.use(cookieParser());
 app.use(
     session({
@@ -44,11 +44,14 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-app.use('/', express.static(path.join(__dirname, '../../client/build')));
 app.use(jwtMiddleware);
+app.use('/', express.static(path.join(__dirname, '../../client/build')));
+
 // Routing
 app.use('/api', apiRoute);
+app.get('/*', (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
+});
 
 const port = PORT || 4000;
 app.listen(port, () => console.log(`server is running at ${port}!`));

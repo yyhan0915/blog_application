@@ -50,7 +50,7 @@ export const write = async (req: Request, res: Response) => {
 
     const result = schema.validate(req.body);
     if (result.error) {
-        return res.status(400).end(result.error);
+        return res.status(400).send(result.error);
     }
 
     const { title, body, tags } = req.body;
