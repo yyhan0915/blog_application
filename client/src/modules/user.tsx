@@ -78,28 +78,4 @@ function user(state = initialState, action: { type: any; payload: any }) {
             return state;
     }
 }
-// const user = handleActions(
-// 	{
-// 		[TEMP_SET_USER]: (state, { payload: user }) => ({
-// 			...state,
-// 			user,
-// 		}),
-// 		[CHECK_SUCESS]: (state, { payload: user }) => ({
-// 			...state,
-// 			user,
-// 			checkError: null,
-// 		}),
-// 		[CHECK_FAILURE]: (state, { payload: error }) => ({
-// 			...state,
-// 			user: null,
-// 			checkError: error,
-// 		}),
-// 		[LOGOUT]: state => ({
-// 			...state,
-// 			user: null,
-// 		}),
-// 	},
-// 	initialState
-// );
-
 export default user;
